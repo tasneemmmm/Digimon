@@ -18,28 +18,20 @@ class DigimonProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _digimonList = await _apiService.fetchAllDigimon();
-      _filteredList = _digimonList;
-    } catch (e) {
       _digimonList = [];
-      _filteredList = [];
+      _digimonList = await _apiService.fetchAllDigimonApi();
+    } catch (e) {
+      throw e.toString();
     }
 
     _isLoading = false;
     notifyListeners();
   }
 
-  void searchByName(String name) {
-    if (name.isEmpty) {
-      _filteredList = _digimonList;
-    } else {
-      _filteredList = _digimonList
-          .where(
-            (digimon) =>
-                digimon.name.toLowerCase().contains(name.toLowerCase()),
-          )
-          .toList();
-    }
+  void searchByName(String name) async {
+    _filteredList = [];
+    _filteredList = await _apiService.fetchByName(name);
+
     notifyListeners();
   }
 }

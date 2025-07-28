@@ -23,17 +23,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<DigimonProvider>().getAllDigimon();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<DigimonProvider>(context, listen: false).getAllDigimon();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<DigimonProvider>(context);
     final digimonList = provider.filteredDigimonList;
-    final isLoading = provider.isLoading;
+    final isLoading = provider.isLoading; //controller
 
-    int totalPages = (digimonList.length / _itemPerPage).ceil();
-
+    int totalPages = (digimonList.length / _itemPerPage).ceil(); //controller
+    //
     List<DigimonModel> currentItems = digimonList
         .skip(_currentPage * _itemPerPage)
         .take(_itemPerPage)
@@ -63,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       final item = _searchController.text.trim();
                       provider.searchByName(item);
                       setState(() {
-                        _currentPage = 0;
+                        _currentPage = 0; //searchByName
                       });
                     },
                     icon: SvgPicture.asset("assets/icons/content.svg"),
@@ -105,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 PaginationWidget(
                   currentPage: _currentPage,
                   totalPages: totalPages,
-                  isAtStart: _currentPage == 1,
+                  isAtStart: _currentPage == 0,
                   isAtEnd: _currentPage == totalPages - 1,
                   onPrevious: () {
                     if (_currentPage > 0) {

@@ -5,7 +5,7 @@ class ApiService {
   final Dio _dio = Dio();
   final String _baseUrl = "https://digimon-api.vercel.app/api/digimon";
 
-  Future<List<DigimonModel>> fetchAllDigimon() async {
+  Future<List<DigimonModel>> fetchAllDigimonApi() async {
     try {
       final response = await _dio.get(_baseUrl);
       List data = response.data;
