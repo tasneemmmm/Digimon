@@ -20,6 +20,7 @@ class DigimonProvider extends ChangeNotifier {
     try {
       _digimonList = [];
       _digimonList = await _apiService.fetchAllDigimonApi();
+      _filteredList = _digimonList;
     } catch (e) {
       throw e.toString();
     }
